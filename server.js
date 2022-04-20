@@ -20,7 +20,8 @@ const PORT = process.env.PORT || 3002;
 //app.get coorrelates to axios.get it's very similar
 app.get('/weather', (request, response) => {
   try {
-    let city= request.query.city;
+    console.log (request.query)
+    let city= request.query.searchQuery;
     console.log(city);
     let cityWeather = weatherData.find(location => location.city_name === city);
     console.log(cityWeather);
