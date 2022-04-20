@@ -5,7 +5,8 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-let weatherData = require('./data/weather.json');
+const weatherReport = require('./weather.js');
+const movie = require('./movie.js');
 
 //USE
 //Once we have required something, we need to use it. This is where we aaasign the required field variable. REact does this with one step 'import'. Express takes 2 steps. 'require' and use'
@@ -18,26 +19,11 @@ const PORT = process.env.PORT || 3002;
 //ROUTES
 //we will write endpoints here
 //app.get coorrelates to axios.get it's very similar
-app.get('/weather', (request, response) => {
-  try {
-    console.log (request.query)
-    let city= request.query.searchQuery;
-    console.log(city);
-    let cityWeather = weatherData.find(location => location.city_name === city);
-    console.log(cityWeather);
-    let weatherDisplay = [];
-    cityWeather.data.forEach(date => {
-      let forecast = new Forecast(date);
-      weatherDisplay.push(forecast);
-      console.log(weatherDisplay);
-    });
+app.get('/weather', weatherReport);
 
-    response.send(weatherDisplay);
+app.get('/movies', movie);
 
-  } catch (error) {
-    response.status(500).send(error.message);
-  }
-});
+
 
 app.get('*', (req, res) => {
   res.send('No such directory');
@@ -45,17 +31,16 @@ app.get('*', (req, res) => {
 
 //ERRORS
 //Handle Errors
-app.use((error, request, response) => {
-  response.status(500).send(error.message);
+app.use((error, request, response, next) => {
+  if (error) {
+    response.status(500).send(error.message);
+  } else{
+    next(error);
+  }
 });
 
 // Classes
-class Forecast {
-  constructor(element) {
-    this.date = element.datetime;
-    this.description = element.weather.description;
-  }
-}
+
 //LISTEN
 //Start the server
 //Liten is a function that takes in a port value and callback.
