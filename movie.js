@@ -1,6 +1,6 @@
-const axios = require ('axios');
+const axios = require('axios');
 
-const errorHandle = require('./error');
+// const errorHandle = require('./error');
 
 async function movie(request, response) {
   try {
@@ -24,7 +24,7 @@ async function movie(request, response) {
     response.send(movieDisplay);
 
   } catch (error) {
-    errorHandle(error);
+    // errorHandle(error);
   }
 }
 
