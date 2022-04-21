@@ -22,8 +22,8 @@ const PORT = process.env.PORT || 3002;
 app.get('/weather', weatherReport);
 
 app.get('/movies', movie);
-
-
+console.log(movie)
+console.log(weatherReport)
 
 app.get('*', (req, res) => {
   res.send('No such directory');
