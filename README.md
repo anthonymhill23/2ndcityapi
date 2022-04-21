@@ -31,3 +31,22 @@ Start time: 530 pm
 Finish time: 1130 pm
 
 Actual time needed to complete: 6 hours (had some computer issues)
+
+
+Name of Feature: Talking to front end
+
+Estimate of time needed to complete: 2 hours'
+
+Start Time : 430 PM EST
+
+Finish Time: 730 PM EST
+
+Actual time needed to complete: 3 hours 
+
+
+
+
+
+![WRRC1](./imgs/day%201%20scott%20and%20anthony%20snip.jpg)
+![WRRC2](./imgs/Untitled.png)
+![WRRC3](./imgs/wrrc-3.png)
