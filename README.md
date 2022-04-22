@@ -50,3 +50,4 @@ Actual time needed to complete: 3 hours
 ![WRRC1](./imgs/day%201%20scott%20and%20anthony%20snip.jpg)
 ![WRRC2](./imgs/Untitled.png)
 ![WRRC3](./imgs/wrrc-3.png)
+![WRRC4](./imgs/WRRC4.png)
