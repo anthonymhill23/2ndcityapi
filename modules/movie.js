@@ -1,58 +1,43 @@
+'use strict';
 const axios = require('axios');
+let cache = require('./cache.js');
+require('dotenv').config();
 
-const errorHandle = require('../error');
+module.exports = getMovie;
 
-let cache = {
-  data: [],
-  timestamp: Date.now(),
+function getMovie(city) {
+  const key = 'movie-' + city;
+  const url = (`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}`);
+
+  if (cache[key] && (Date.now() - cache[key].timestamp < 1000*60*60*24*30)) {
+    console.log('Cache hit');
+  } else {
+    console.log('Cache miss');
+    cache[key] = {};
+    cache[key].timestamp = Date.now();
+    cache[key].data = axios.get(url)
+      .then(response => parseMovie(response.data));
+  }
+
+  return cache[key].data;
 }
 
-
-async function movie(request, response) {
+function parseMovie(movieData) {
   try {
-    let city = request.query.city;
-
-    //key for cache
-
-    let cacheKey = city + 'Data';
-
-    if (cache[cacheKey] && (Date.now()) - cache[cacheKey].timestamp < 1000 * 60) {
-      response.status(200).send(cache[cacheKey].data);
-    } else {
-
-      let url = (`https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${city}&total_results=3`);
-      // console.log(url);
-      let cityMovie = await axios.get(url);
-
-      // console.log(cityMovie);
-
-      let movieDisplay = [];
-
-      cityMovie.data.results.forEach(title => {
-
-        let movie = new Movie(title);
-        // console.log(movie);
-        movieDisplay.push(movie);
-      });
-      cache[cacheKey] = {
-        data: movieDisplay,
-        timestamp: Date.now(),
-      };
-      response.send(movieDisplay);
-    }
-  } catch (error) {
-    errorHandle(error);
+    const movieSummaries = movieData.results.map(data => {
+      return new Movie(data);
+    });
+    return Promise.resolve(movieSummaries);
+  } catch (e) {
+    return Promise.reject(e);
   }
 }
-
-
 
 class Movie {
-  constructor(element) {
-    this.title = element.title;
-    this.description = element.overview;
-    this.language = element.original_language;
-    this.tagline = element.tagline;
+  constructor(data) {
+    this.title = data.title;
+    this.description = data.overview;
+    this.language = data.original_language;
+    this.tagline = data.tagline;
   }
 }
-module.exports = movie;
